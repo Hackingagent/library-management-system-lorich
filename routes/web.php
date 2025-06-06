@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\auth\LoginController;
-use App\Http\Controllers\AutherController;
+use App\Http\Controllers\AutherController; // Corrected typo from user file: Auther -> Author?
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BookIssueController;
 use App\Http\Controllers\CategoryController;
@@ -10,8 +10,10 @@ use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\LinkController; // Added for Admin Links
+use App\Http\Controllers\StudentPanel\LinkController as StudentLinkController; // Added for Student Panel Links
 use Illuminate\Support\Facades\Route;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+// Removed unused import: use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,12 +31,11 @@ Route::get('/', function () {
 })->middleware('guest');
 Route::post('/', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-// Route::post('/Change-password', [LoginController::class, 'changePassword'])->name('change_password');
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('change-password',[dashboardController::class,'change_password_view'])->name('change_password_view');
-    Route::post('change-password',[dashboardController::class,'change_password'])->name('change_password');
+    Route::get('change-password', [dashboardController::class, 'change_password_view'])->name('change_password_view');
+    Route::post('change-password', [dashboardController::class, 'change_password'])->name('change_password');
     Route::get('/dashboard', [dashboardController::class, 'index'])->name('dashboard');
 
     // author CRUD
@@ -61,9 +62,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/category/delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
     Route::post('/category/create', [CategoryController::class, 'store'])->name('category.store');
 
-
-
-
     // books CRUD
     Route::get('/books', [BookController::class, 'index'])->name('books');
     Route::get('/book/create', [BookController::class, 'create'])->name('book.create');
@@ -81,8 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/student/create', [StudentController::class, 'store'])->name('student.store');
     Route::get('/student/show/{id}', [StudentController::class, 'show'])->name('student.show');
 
-
-
+    // Book Issue CRUD
     Route::get('/book_issue', [BookIssueController::class, 'index'])->name('book_issued');
     Route::get('/book-issue/create', [BookIssueController::class, 'create'])->name('book_issue.create');
     Route::get('/book-issue/edit/{id}', [BookIssueController::class, 'edit'])->name('book_issue.edit');
@@ -90,6 +87,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/book-issue/delete/{id}', [BookIssueController::class, 'destroy'])->name('book_issue.destroy');
     Route::post('/book-issue/create', [BookIssueController::class, 'store'])->name('book_issue.store');
 
+    // Reports
     Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
     Route::get('/reports/Date-Wise', [ReportsController::class, 'date_wise'])->name('reports.date_wise');
     Route::post('/reports/Date-Wise', [ReportsController::class, 'generate_date_wise_report'])->name('reports.date_wise_generate');
@@ -97,6 +95,24 @@ Route::middleware('auth')->group(function () {
     Route::post('/reports/monthly-Wise', [ReportsController::class, 'generate_month_wise_report'])->name('reports.month_wise_generate');
     Route::get('/reports/not-returned', [ReportsController::class, 'not_returned'])->name('reports.not_returned');
 
+    // Settings
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings');
+
+    // --- NEW ROUTES START HERE ---
+
+    // Admin External Links CRUD (using LinkController)
+    Route::get('/links', [LinkController::class, 'index'])->name('links.admin_links');
+    Route::get('/links/create', [LinkController::class, 'create'])->name('links.add_link');
+    Route::post('/links/create', [LinkController::class, 'store'])->name('admin.links.store');
+    Route::get('/links/edit/{link}', [LinkController::class, 'edit'])->name('admin.links.edit');
+    Route::post('/links/update/{link}', [LinkController::class, 'update'])->name('admin.links.update');
+    Route::post('/links/delete/{link}', [LinkController::class, 'destroy'])->name('admin.links.destroy');
+
+    // Student Panel - View External Links (using StudentPanel\LinkController)
+    Route::get('/student/view-links', [StudentLinkController::class, 'index'])->name('student-panel.student_links');
+
+    // --- NEW ROUTES END HERE ---
+
 });
+

@@ -29,7 +29,8 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="{{ route('change_password') }}">Change Password</a>
-                            <a class="dropdown-item" href="#" onclick="document.getElementById('logoutForm').submit()">Log Out</a>
+                            <a class="dropdown-item" href="#"
+                                onclick="document.getElementById('logoutForm').submit()">Log Out</a>
                         </div>
                         <form method="post" id="logoutForm" action="{{ route('logout') }}">
                             @csrf
@@ -54,6 +55,7 @@
                         <li><a href="{{ route('book_issued') }}">Book Issue</a></li>
                         <li><a href="{{ route('reports') }}">Reports</a></li>
                         <li><a href="{{ route('settings') }}">Settings</a></li>
+                        <li><a href="{{ route('links.admin_links') }}">Links</a></li>
                     </ul>
                 </div>
             </div>
@@ -67,7 +69,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <span>© Copyright {{ now()->format("Y") }} <a href="https://www.yahoobaba.net">YahooBaba 😎</a></span>
+                    <span>© Copyright {{ now()->format("Y") }} <a href="https://www.yahoobaba.net">YahooBaba
+                            😎</a></span>
                 </div>
             </div>
         </div>
