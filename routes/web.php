@@ -115,6 +115,6 @@ Route::middleware('auth')->group(function () {
     // --- NEW ROUTES END HERE ---
 
 });
-
+ 
 
 include 'student.php';

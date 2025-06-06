@@ -1,4 +1,4 @@
-@extends("user_layout")
+@extends("layouts.student")
 @section("content")
     <div class="container user-links-page">
         <div class="row mb-4">
