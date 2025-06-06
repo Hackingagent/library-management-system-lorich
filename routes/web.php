@@ -116,3 +116,5 @@ Route::middleware('auth')->group(function () {
 
 });
 
+
+include 'student.php';
