@@ -8,6 +8,12 @@ use App\Http\Requests\UpdatebookRequest;
 use App\Models\auther;
 use App\Models\category;
 use App\Models\publisher;
+use App\Models\File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
+
+
 
 class BookController extends Controller
 {
@@ -20,7 +26,7 @@ class BookController extends Controller
     {
 
         return view('book.index', [
-            'books' => book::Paginate(5)
+            'books' => book::with('file')->Paginate(5)
         ]);
     }
 
@@ -46,10 +52,42 @@ class BookController extends Controller
      */
     public function store(StorebookRequest $request)
     {
-        book::create($request->validated() + [
+        if ($request->hasFile('image')){
+            $file = $request->image;
+
+            $name = date('d-m=y-H-m-i');
+            $folder = 'books';
+
+            if(!Storage::disk('public')->exists($folder)){
+                Storage::disk('public')->makeDirectory($folder);
+            }
+
+            $ext = $file->getClientOriginalExtension();
+
+            $path = $name. Str::random(10). '.' . $ext;
+            $file->storeAs($folder, $path, 'public');
+
+
+
+        }
+
+        $book = book::create($request->validated() + [
             'status' => 'Y'
         ]);
+
+        if($book && $path){
+            File::create([
+                'book_id' => $book->id,
+                'path' => $folder. '/'. $path,
+            ]);
+
+
+        }
+
         return redirect()->route('books');
+
+
+
     }
 
 

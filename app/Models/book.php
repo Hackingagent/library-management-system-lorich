@@ -42,6 +42,11 @@ class book extends Model
         return $this->belongsTo(publisher::class);
     }
 
+    public function file()
+    {
+        return $this->hasOne(File::class, 'book_id');
+    }
+
 
 
 }
