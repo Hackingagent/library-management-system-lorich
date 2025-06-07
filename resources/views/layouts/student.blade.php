@@ -48,7 +48,7 @@
                             <a class="nav-link" href="{{ route("student-panel.student_links") }}">External Links</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route("student-panel.student_links") }}">Books</a>
+                            <a class="nav-link" href="{{ route("student.browse-books") }}">Books</a>
                         </li>
                     </ul>
 
@@ -62,8 +62,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route("logout") }}" onclick="event.preventDefault();
-                                                                     document.getElementById('logout-form').submit();">
+                                    <a class="dropdown-item" href="{{ route("logout") }}"
+                                        onclick="event.preventDefault();
+                                                                                 document.getElementById('logout-form').submit();">
                                         {{ __("Logout") }}
                                     </a>
 
