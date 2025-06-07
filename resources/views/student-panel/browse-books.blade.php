@@ -1,242 +1,417 @@
-@extends('layouts.student')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
-    <div class="container user-links-page">
-        <!-- Header Section -->
-        <header class="page-header py-5 mb-5 animate__animated animate__fadeIn">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8 mx-auto text-center">
-                        <h1 class="display-4 fw-bold mb-3">Library Catalog</h1>
-                        <p class="lead mb-4">Browse our collection of available books</p>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Filter and Search Section -->
-        <div class="filter-section animate__animated animate__fadeIn">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" class="form-control"
-                            placeholder="Search by title, author, or ISBN...">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <select id="genreFilter" class="form-select">
-                        <option value="all">All Genres</option>
-                        <option value="fiction">Fiction</option>
-                        <option value="non-fiction">Non-Fiction</option>
-                        <option value="science">Science</option>
-                        <option value="history">History</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="row mt-3">
-                <div class="col-12">
-                    <h6 class="mb-2">Quick Filters:</h6>
-                    <div class="filter-tags">
-                        <span class="filter-tag active" data-filter="all">All</span>
-                        <span class="filter-tag" data-filter="available">Available Now</span>
-                        <span class="filter-tag" data-filter="new">New Arrivals</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Books Grid -->
-        <div class="row" id="booksContainer">
-            @foreach($books as $book)
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4 animate__animated animate__fadeIn">
-                    <div class="book-card">
-                        <div class="book-cover" style="background-image: url('{{ $book->cover_url }}')">
-                            <span class="book-badge {{ $book->available ? 'bg-success' : 'bg-warning' }} text-white">
-                                {{ $book->available ? 'Available' : 'Checked Out' }}
-                            </span>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="book-title">{{ $book->title }}</h5>
-                            <p class="book-author">by {{ $book->author }}</p>
-                            <p class="book-description">{{ Str::limit($book->description, 100) }}</p>
-                            <div class="book-meta">
-                                <span class="book-rating">
-                                    @for($i = 1; $i <= 5; $i++)
-                                        @if($i <= floor($book->rating))
-                                            <i class="fas fa-star"></i>
-                                        @elseif($i == ceil($book->rating) && $book->rating % 1 != 0)
-                                            <i class="fas fa-star-half-alt"></i>
-                                        @else
-                                            <i class="far fa-star"></i>
-                                        @endif
-                                    @endfor
-                                </span>
-                                <span>{{ $book->published_year }}</span>
-                            </div>
-                            <div class="d-flex justify-content-between mt-3">
-                                <button class="btn btn-book-secondary btn-sm">
-                                    <i class="far fa-bookmark"></i> Save
-                                </button>
-                                <button class="btn btn-book btn-sm {{ $book->available ? '' : 'disabled' }}">
-                                    <i class="fas fa-book"></i> Borrow
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-        <!-- No Results Message -->
-        <div class="no-results d-none animate__animated animate__fadeIn" id="noResults">
-            <i class="fas fa-book-open"></i>
-            <h3 class="mb-3">No Books Found</h3>
-            <p class="text-muted mb-4">Try adjusting your search or filter criteria</p>
-            <button class="btn btn-book" id="resetFilters">Reset All Filters</button>
-        </div>
-
-        <!-- Pagination -->
-        <div class="mt-5">
-            {{ $books->links() }}
-        </div>
-    </div>
-
-    <!-- Floating Action Button -->
-    <div class="floating-action-btn animate__animated animate__fadeInUp">
-        <i class="fas fa-filter"></i>
-    </div>
-@endsection
-
-@section('styles')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Book Catalog</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        .page-header {
-            background: linear-gradient(135deg, #4361ee, #3f37c9);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .library-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(to right, #e52d27, #b31217);
             color: white;
-            border-radius: 0 0 20px 20px;
-            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.2);
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-box button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background: #e52d27;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .filter-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: #e52d27;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(229, 45, 39, 0.3);
+        }
+
+        .sort-select {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
         }
 
         .book-card {
-            border: none;
-            border-radius: 15px;
-            transition: all 0.3s ease;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            height: 100%;
+            transition: all 0.3s ease;
         }
 
         .book-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
 
-        .book-cover {
-            height: 250px;
-            background-size: cover;
-            background-position: center;
+        .book-image {
+            height: 300px;
             position: relative;
+            overflow: hidden;
         }
 
-        .book-badge {
+        .book-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .book-card:hover .book-image img {
+            transform: scale(1.1);
+        }
+
+        .book-status {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            z-index: 2;
-        }
-
-        .filter-tag {
-            display: inline-block;
-            padding: 5px 15px;
-            background-color: #f8f9fa;
-            border-radius: 50px;
-            margin-right: 10px;
-            cursor: pointer;
-        }
-
-        .filter-tag.active {
-            background-color: #4361ee;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
             color: white;
         }
 
-        .floating-action-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: #f72585;
-            color: white;
+        .available {
+            background-color: #4CAF50;
+        }
+
+        .unavailable {
+            background-color: #e52d27;
+        }
+
+        .book-info {
+            padding: 20px;
+        }
+
+        .book-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .book-author {
+            color: #e52d27;
+            margin-bottom: 10px;
+        }
+
+        .book-rating {
+            color: #FFD700;
+            margin-bottom: 10px;
+        }
+
+        .book-meta {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 5px 20px rgba(247, 37, 133, 0.4);
-            cursor: pointer;
+            justify-content: space-between;
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
         }
-    </style>
-@endsection
 
-@section('scripts')
-    <script>
-        $(document).ready(function () {
-            // Filter functionality
-            $('#searchInput, #genreFilter').on('input change', filterBooks);
-            $('.filter-tag').click(function () {
-                $('.filter-tag').removeClass('active');
-                $(this).addClass('active');
-                filterBooks();
-            });
+        .book-actions {
+            display: flex;
+            gap: 10px;
+        }
 
-            function filterBooks() {
-                const searchTerm = $('#searchInput').val().toLowerCase();
-                const genreFilter = $('#genreFilter').val();
-                const quickFilter = $('.filter-tag.active').data('filter');
+        .borrow-btn {
+            flex: 1;
+            background: #e52d27;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
 
-                let visibleBooks = 0;
+        .borrow-btn:hover {
+            background: #b31217;
+        }
 
-                $('.book-card').parent().each(function () {
-                    const $card = $(this);
-                    const title = $card.find('.book-title').text().toLowerCase();
-                    const author = $card.find('.book-author').text().toLowerCase();
-                    const genre = $card.data('genre'); // Add data-genre to your book cards
-                    const status = $card.find('.book-badge').text().trim();
-                    const isNew = $card.data('new'); // Add data-new for new arrivals
+        .borrow-btn.disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
 
-                    const matchesSearch = title.includes(searchTerm) || author.includes(searchTerm);
-                    const matchesGenre = genreFilter === 'all' || genre === genreFilter;
-                    let matchesQuickFilter = true;
+        .wishlist-btn {
+            width: 40px;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-                    if (quickFilter === 'available') {
-                        matchesQuickFilter = status === 'Available';
-                    } else if (quickFilter === 'new') {
-                        matchesQuickFilter = isNew;
-                    }
+        .wishlist-btn:hover {
+            background: #ffebee;
+            color: #e52d27;
+        }
 
-                    if (matchesSearch && matchesGenre && matchesQuickFilter) {
-                        $card.removeClass('d-none').addClass('animate__fadeIn');
-                        visibleBooks++;
-                    } else {
-                        $card.addClass('d-none');
-                    }
-                });
-
-                if (visibleBooks === 0) {
-                    $('#noResults').removeClass('d-none');
-                    $('#booksContainer').addClass('d-none');
-                } else {
-                    $('#noResults').addClass('d-none');
-                    $('#booksContainer').removeClass('d-none');
-                }
+        @media (max-width: 768px) {
+            .filter-section {
+                flex-direction: column;
+                gap: 15px;
             }
 
-            // Floating button click handler
-            $('.floating-action-btn').click(function () {
-                $('html, body').animate({
-                    scrollTop: $('.filter-section').offset().top - 20
-                }, 500);
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="library-container">
+        <div class="header">
+            <h1>Digital Library Collection</h1>
+            <div class="search-box">
+                <input type="text" placeholder="Search for books, authors...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-buttons">
+                <button class="filter-btn active">All Books</button>
+                <button class="filter-btn">Fiction</button>
+                <button class="filter-btn">Science</button>
+                <button class="filter-btn">History</button>
+                <button class="filter-btn">Available</button>
+            </div>
+            <select class="sort-select">
+                <option>Sort by Title</option>
+                <option>Sort by Author</option>
+                <option>Sort by Year</option>
+                <option>Sort by Rating</option>
+            </select>
+        </div>
+
+        <div class="books-grid">
+            <!-- Book 1 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop"
+                        alt="Book Cover">
+                    <div class="book-status available">Available</div>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">The Great Gatsby</h3>
+                    <p class="book-author">F. Scott Fitzgerald</p>
+                    <div class="book-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="book-meta">
+                        <span>Fiction</span>
+                        <span>1925</span>
+                    </div>
+                    <div class="book-actions">
+                        <button class="borrow-btn">Borrow Now</button>
+                        <button class="wishlist-btn"><i class="fas fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book 2 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=400&fit=crop"
+                        alt="Book Cover">
+                    <div class="book-status unavailable">Checked Out</div>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">A Brief History of Time</h3>
+                    <p class="book-author">Stephen Hawking</p>
+                    <div class="book-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="book-meta">
+                        <span>Science</span>
+                        <span>1988</span>
+                    </div>
+                    <div class="book-actions">
+                        <button class="borrow-btn disabled">Unavailable</button>
+                        <button class="wishlist-btn"><i class="fas fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book 3 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=400&fit=crop"
+                        alt="Book Cover">
+                    <div class="book-status available">Available</div>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">Sapiens</h3>
+                    <p class="book-author">Yuval Noah Harari</p>
+                    <div class="book-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="book-meta">
+                        <span>History</span>
+                        <span>2011</span>
+                    </div>
+                    <div class="book-actions">
+                        <button class="borrow-btn">Borrow Now</button>
+                        <button class="wishlist-btn"><i class="fas fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book 4 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=400&fit=crop"
+                        alt="Book Cover">
+                    <div class="book-status available">Available</div>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">1984</h3>
+                    <p class="book-author">George Orwell</p>
+                    <div class="book-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="book-meta">
+                        <span>Fiction</span>
+                        <span>1949</span>
+                    </div>
+                    <div class="book-actions">
+                        <button class="borrow-btn">Borrow Now</button>
+                        <button class="wishlist-btn"><i class="fas fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Filter buttons
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Wishlist buttons
+            const wishlistButtons = document.querySelectorAll('.wishlist-btn');
+            wishlistButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    this.classList.toggle('active');
+                    const icon = this.querySelector('i');
+                    if (this.classList.contains('active')) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                        this.style.color = '#e52d27';
+                    } else {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                        this.style.color = '';
+                    }
+                });
             });
         });
     </script>
-@endsection
+</body>
+
+</html>
