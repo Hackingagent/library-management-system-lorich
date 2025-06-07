@@ -12,13 +12,23 @@
             </div>
             <div class="row">
                 <div class="offset-md-3 col-md-6">
-                    <form class="yourform" action="{{ route('book.store') }}" method="post" autocomplete="off">
+                    <form class="yourform" action="{{ route('book.store') }}" method="post" autocomplete="off" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label>Book Name</label>
                             <input type="text" class="form-control @error('name') isinvalid @enderror"
                                 placeholder="Book Name" name="name" value="{{ old('name') }}" required>
                             @error('name')
+                                <div class="alert alert-danger" role="alert">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Book Image</label>
+                            <input type="file" class="form-control @error('image') isinvalid @enderror"
+                                placeholder="Book Image" name="image" value="{{ old('image') }}" accept=".jpg, .png, .jpeg">
+                            @error('image')
                                 <div class="alert alert-danger" role="alert">
                                     {{ $message }}
                                 </div>
