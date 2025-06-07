@@ -34,7 +34,7 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url("/") }}">
-                    {{ config("app.name", "Library Portal") }}
+                    E-library
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -45,15 +45,18 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route("student-panel.student_links") }}">External Links</a>
+                            <a class="nav-link" href="{{ route("student.links") }}">External Links</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route("student.browse-books") }}">Books</a>
+                            <a class="nav-link" href="{{ route("student.books") }}">Browse Books</a>
                         </li>
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
                         @guest
+                        <li>
+                            <a href="{{ route('show.login') }}">Admin</a>
+                        </li>
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"

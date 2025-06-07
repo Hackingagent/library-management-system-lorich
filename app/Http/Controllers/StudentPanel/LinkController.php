@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\StudentPanel;
 
 use App\Http\Controllers\Controller;
-use App\Models\Book;
+use App\Models\book;
 use Illuminate\Http\Request;
 
 class LinkController extends Controller
@@ -13,7 +13,7 @@ class LinkController extends Controller
      */
     public function index()
     {
-        return view("student-panel.links");
+        return view("student-panel.student_links");
     }
 
     /**
@@ -21,9 +21,9 @@ class LinkController extends Controller
      */
     public function browse()
     {
-        $books = Book::with(['author', 'category'])
-            ->where('is_available', true)
-            ->orderBy('title')
+        $books = book::with(['auther', 'category'])
+            ->where('status', 'Y')
+            ->orderBy('name')
             ->paginate(12);
 
         return view("student-panel.browse-books", compact('books'));

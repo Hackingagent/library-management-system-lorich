@@ -25,10 +25,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/admin/login', function () {
     return view('welcome');
-})->middleware('guest');
-Route::post('/', [LoginController::class, 'login'])->name('login');
+})->middleware('guest')->name('show.login');
+    // Student Panel Routes
+Route::get('/', [StudentLinkController::class, 'index'])->name('student.links');
+Route::get('/browse-books', [StudentLinkController::class, 'browse'])->name('student.books');
+
+
+
+
+Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
@@ -107,14 +114,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/links/update/{link}', [LinkController::class, 'update'])->name('admin.links.update');
     Route::post('/links/delete/{link}', [LinkController::class, 'destroy'])->name('admin.links.destroy');
 
-    // Student Panel Routes
-    Route::prefix('student')->group(function () {
-        Route::get('/links', [StudentLinkController::class, 'index'])
-            ->name('student-panel.student_links');
 
-        Route::get('/browse-books', [StudentLinkController::class, 'browse'])
-            ->name('student-panel.browse-books');
-    });
 });
 
-include 'student.php';
+// include 'student.php';
