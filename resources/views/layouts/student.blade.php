@@ -7,7 +7,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config("app.name", "Laravel Library") }} - User Panel</title>
+    <title>User Panel</title>
 
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
@@ -45,10 +45,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Dashboard</a>
+                            <a class="nav-link" href="{{ route("student-panel.student_links") }}">External Links</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route("student-panel.student_links") }}">External Links</a>
+                            <a class="nav-link" href="{{ route("student-panel.student_links") }}">Books</a>
                         </li>
                     </ul>
 
@@ -63,7 +63,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route("logout") }}" onclick="event.preventDefault();
-                                                             document.getElementById('logout-form').submit();">
+                                                                     document.getElementById('logout-form').submit();">
                                         {{ __("Logout") }}
                                     </a>
 
