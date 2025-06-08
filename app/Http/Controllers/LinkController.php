@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-// use App\Models\Link; // Assuming you have a Link model
+use App\Models\Link;
 
 class LinkController extends Controller
 {
@@ -19,7 +19,10 @@ class LinkController extends Controller
         // return view("admin.links.index", compact("links"));
 
         // For now, returning the view without data
-        return view("links.admin_links");
+        return view("links.admin_links", [
+            'links' => Link::Paginate(5)
+
+        ]);
     }
 
     /**
@@ -28,6 +31,7 @@ class LinkController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
+
     {
         return view("links.add_link");
     }
@@ -45,10 +49,16 @@ class LinkController extends Controller
             "title" => "required|string|max:255",
             "url" => "required|url|max:2048",
             "type" => "required|string|in:site,journal,article",
+
         ]);
 
         // Create and save the link
-        // Link::create($request->all()); // Example
+        Link::create([
+            'title' => $request->title,
+            'url' => $request->url,
+            'type' => $request->type,
+            'description' => $request->description,
+        ]); // Example
 
         // Redirect back to the index page with a success message
         // return redirect()->route("admin.links.index")->with("message", "Link added successfully!");
@@ -63,16 +73,11 @@ class LinkController extends Controller
      * @param  int  $id // Or use Route Model Binding: Link $link
      * @return \Illuminate\Http\Response
      */
-    public function edit($link) // Using Route Model Binding: public function edit(Link $link)
+    public function edit(Link $link) // Using Route Model Binding: public function edit(Link $link)
     {
-        // Fetch the specific link
-        // $link = Link::findOrFail($id); // If not using Route Model Binding
-
-        // return view("admin.links.edit", compact("link"));
-
-        // For now, returning the view without data (assuming edit view exists)
-        // return view("admin.links.edit");
-        return response("Edit form for link ID: " . (is_object($link) ? $link->id : $link)); // Placeholder
+        return view('links.edit', [
+            'link' => $link
+        ]);
     }
 
     /**
@@ -82,7 +87,7 @@ class LinkController extends Controller
      * @param  int  $id // Or use Route Model Binding: Link $link
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $link) // Using Route Model Binding: public function update(Request $request, Link $link)
+    public function update(Request $request, $id) // Using Route Model Binding: public function update(Request $request, Link $link)
     {
         // Validate the request data
         $request->validate([
@@ -91,15 +96,16 @@ class LinkController extends Controller
             "type" => "required|string|in:site,journal,article",
         ]);
 
-        // Find and update the link
-        // $linkToUpdate = Link::findOrFail($id); // If not using Route Model Binding
-        // $linkToUpdate->update($request->all()); // Example
-        // $link->update($request->all()); // If using Route Model Binding
+        $link = Link::find($id);
 
-        // Redirect back to the index page with a success message
-        // return redirect()->route("admin.links.index")->with("message", "Link updated successfully!");
+        $link->update([
+            'title' => $request->title,
+            'url' => $request->url,
+            'type' => $request->type,
+            'description' => $request->description,
+        ]);
 
-        // For now, just redirecting back
+
         return redirect()->route("links.admin_links");
     }
 
@@ -109,17 +115,12 @@ class LinkController extends Controller
      * @param  int  $id // Or use Route Model Binding: Link $link
      * @return \Illuminate\Http\Response
      */
-    public function destroy($link) // Using Route Model Binding: public function destroy(Link $link)
+    public function destroy($id) // Using Route Model Binding: public function destroy(Link $link)
     {
         // Find and delete the link
-        // $linkToDelete = Link::findOrFail($id); // If not using Route Model Binding
-        // $linkToDelete->delete(); // Example
-        // $link->delete(); // If using Route Model Binding
+        $linkToDelete = Link::findOrFail($id); // If not using Route Model Binding
+        $linkToDelete->delete(); // Example
 
-        // Redirect back to the index page with a success message
-        // return redirect()->route("admin.links.index")->with("message", "Link deleted successfully!");
-
-        // For now, just redirecting back
         return redirect()->route("links.admin_links");
     }
 }

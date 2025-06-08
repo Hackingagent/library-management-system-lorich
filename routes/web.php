@@ -110,9 +110,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/links', [LinkController::class, 'index'])->name('links.admin_links');
     Route::get('/links/create', [LinkController::class, 'create'])->name('links.add_link');
     Route::post('/links/create', [LinkController::class, 'store'])->name('admin.links.store');
-    Route::get('/links/edit/{link}', [LinkController::class, 'edit'])->name('admin.links.edit');
-    Route::post('/links/update/{link}', [LinkController::class, 'update'])->name('admin.links.update');
-    Route::post('/links/delete/{link}', [LinkController::class, 'destroy'])->name('admin.links.destroy');
+    Route::get('/links/edit/{link}', [LinkController::class, 'edit'])->name('links.edit');
+    Route::put('/links/update/{id}', [LinkController::class, 'update'])->name('links.update');
+    Route::delete('/links/delete/{id}', [LinkController::class, 'destroy'])->name('links.destroy');
 
 
 });

@@ -18,26 +18,30 @@
                             <th>Title</th>
                             <th>URL</th>
                             <th>Type</th>
+                            <th>Description</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Example Site</td>
-                                <td><a href="http://example.com" target="_blank">http://example.com</a></td>
-                                <td>Site</td>
-                                <td class="edit"><a href="#" class="btn btn-success">Edit</a></td>
-                                <td class="delete">
-                                    <form action="#" method="POST"
-                                        onsubmit="return confirm('Are you sure you want to delete this link?');">
-                                        @csrf
-                                        @method("DELETE")
-                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr>
+                            @foreach ($links as $link)
+                                <tr>
+                                    <td>{{$loop->index + 1}}</td>
+                                    <td>{{$link->title}}</td>
+                                    <td><a href="{{ $link->url }}" target="_blank">{{$link->url}}</a></td>
+                                    <td>{{ $link->type }}</td>
+                                    <td>{{ $link->description }}</td>
+                                    <td class="edit"><a href="{{ route('links.edit', $link) }}" class="btn btn-success">Edit</a></td>
+                                    <td class="delete">
+                                        <form action="{{ route('links.destroy',$link->id ) }}" method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this link?');">
+                                            @csrf
+                                            @method("DELETE")
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            {{-- <tr>
                                 <td>2</td>
                                 <td>Sample Journal Article</td>
                                 <td><a href="http://journal.example.com/article1"
@@ -52,7 +56,7 @@
                                         <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
                                 </td>
-                            </tr>
+                            </tr> --}}
                         </tbody>
                     </table>
                 </div>
