@@ -50,18 +50,27 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route("student.books") }}">Browse Books</a>
                         </li>
+                        @auth('student')
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Pay Library Fee</a>
+                            </li>
+                        @endauth
+
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
-                        @guest
+                        {{-- @guest
                         <li>
                             <a href="{{ route('show.login') }}">Admin</a>
                         </li>
-                        @else
+                        @endguest --}}
+
+                        @auth('student')
+
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                    {{ Auth::guard('student')->user()->name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -76,7 +85,11 @@
                                     </form>
                                 </div>
                             </li>
-                        @endguest
+                        @else
+                        <a href="{{ route('student.login') }}">login</a>
+
+
+                        @endauth
                     </ul>
                 </div>
             </div>

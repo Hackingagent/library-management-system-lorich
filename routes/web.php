@@ -117,4 +117,4 @@ Route::middleware('auth')->group(function () {
 
 });
 
-// include 'student.php';
+include 'student.php';
