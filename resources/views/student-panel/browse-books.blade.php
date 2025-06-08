@@ -248,8 +248,10 @@
             <div class="header">
                 <h1>Digital Library Collection</h1>
                 <div class="search-box">
-                    <input type="text" placeholder="Search for books, authors...">
-                    <button><i class="fas fa-search"></i></button>
+                    <form action="{{ route('student.books') }}" method="GET">
+                        <input type="text" name="search" placeholder="Search for books, authors..." value="{{ request('search') }}">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </form>
                 </div>
             </div>
 
@@ -261,126 +263,63 @@
                     <button class="filter-btn">History</button>
                     <button class="filter-btn">Available</button>
                 </div>
-                <select class="sort-select">
-                    <option>Sort by Title</option>
-                    <option>Sort by Author</option>
-                    <option>Sort by Year</option>
-                    <option>Sort by Rating</option>
-                </select>
+                <form action="" method="GET">
+                    <input type="hidden" name="search" value="{{ request('search') }}">
+                    <select class="sort-select" name="sort" onchange="this.form.submit()">
+                        <option value="title" {{ request('sort') == 'title' ? 'selected' : '' }}>Sort by Title</option>
+                        <option value="author" {{ request('sort') == 'author' ? 'selected' : '' }}>Sort by Author</option>
+                        <option value="year" {{ request('sort') == 'year' ? 'selected' : '' }}>Sort by Year</option>
+                    </select>
+                </form>
             </div>
 
             <div class="books-grid">
                 <!-- Book 1 -->
-                <div class="book-card">
-                    <div class="book-image">
-                        <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop"
-                            alt="Book Cover">
-                        <div class="book-status available">Available</div>
-                    </div>
-                    <div class="book-info">
-                        <h3 class="book-title">The Great Gatsby</h3>
-                        <p class="book-author">F. Scott Fitzgerald</p>
-                        <div class="book-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                        <div class="book-meta">
-                            <span>Fiction</span>
-                            <span>1925</span>
-                        </div>
-                        <div class="book-actions">
-                            <button class="borrow-btn">Borrow Now</button>
-                            <button class="wishlist-btn"><i class="fas fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>
+                @foreach ($books as $book)
 
-                <!-- Book 2 -->
-                <div class="book-card">
-                    <div class="book-image">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=400&fit=crop"
-                            alt="Book Cover">
-                        <div class="book-status unavailable">Checked Out</div>
-                    </div>
-                    <div class="book-info">
-                        <h3 class="book-title">A Brief History of Time</h3>
-                        <p class="book-author">Stephen Hawking</p>
-                        <div class="book-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div class="book-meta">
-                            <span>Science</span>
-                            <span>1988</span>
-                        </div>
-                        <div class="book-actions">
-                            <button class="borrow-btn disabled">Unavailable</button>
-                            <button class="wishlist-btn"><i class="fas fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>
+                    <div class="book-card">
+                        <div class="book-image">
+                            @if($book->file)
+                                <img src="{{ asset('storage/' . $book->file->path) }}" alt="Book Image" width="100">
+                            @else
+                                No file
+                            @endif
 
-                <!-- Book 3 -->
-                <div class="book-card">
-                    <div class="book-image">
-                        <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=400&fit=crop"
-                            alt="Book Cover">
-                        <div class="book-status available">Available</div>
-                    </div>
-                    <div class="book-info">
-                        <h3 class="book-title">Sapiens</h3>
-                        <p class="book-author">Yuval Noah Harari</p>
-                        <div class="book-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div class="book-meta">
-                            <span>History</span>
-                            <span>2011</span>
-                        </div>
-                        <div class="book-actions">
-                            <button class="borrow-btn">Borrow Now</button>
-                            <button class="wishlist-btn"><i class="fas fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>
+                            @if ($book->status == 'Y')
+                                <div class="book-status available">Available</div>
+                            @else
+                                <div class="book-status unavailable">Checked Out</div>
 
-                <!-- Book 4 -->
-                <div class="book-card">
-                    <div class="book-image">
-                        <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=400&fit=crop"
-                            alt="Book Cover">
-                        <div class="book-status available">Available</div>
+                            @endif
+                        </div>
+                        <div class="book-info">
+                            <h3 class="book-title">{{$book->name}}</h3>
+                            <p class="book-author">{{ $book->auther->name }}</p>
+                            {{-- <div class="book-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div> --}}
+                            <div class="book-meta">
+                                <span>{{$book->category->name}}</span>
+                                <span>{{$book->created_at->format('Y')}}</span>
+                            </div>
+                            <div class="book-actions">
+                                @if ($book->status == 'Y')
+                                    <button class="borrow-btn">Borrow Now</button>
+                                @else
+                                    <button class="borrow-btn disabled">Unavailable</button>
+
+                                @endif
+                                <button class="wishlist-btn"><i class="fas fa-heart"></i></button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="book-info">
-                        <h3 class="book-title">1984</h3>
-                        <p class="book-author">George Orwell</p>
-                        <div class="book-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div class="book-meta">
-                            <span>Fiction</span>
-                            <span>1949</span>
-                        </div>
-                        <div class="book-actions">
-                            <button class="borrow-btn">Borrow Now</button>
-                            <button class="wishlist-btn"><i class="fas fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
+
+
             </div>
         </div>
 
