@@ -5,6 +5,7 @@ namespace App\Http\Controllers\StudentPanel;
 use App\Http\Controllers\Controller;
 use App\Models\book;
 use Illuminate\Http\Request;
+use App\Models\Link;
 
 class LinkController extends Controller
 {
@@ -13,7 +14,15 @@ class LinkController extends Controller
      */
     public function index()
     {
-        return view("student-panel.student_links");
+        $links = Link::all(); // Assuming you have a Link model
+
+        $groupedLinks = [
+            'site' => $links->where('type', 'site')->values(),
+            'journal' => $links->where('type', 'journal')->values(),
+            'article' => $links->where('type', 'article')->values(),
+        ];
+
+        return view('student-panel.links', compact('groupedLinks'));
     }
 
     /**
@@ -59,7 +68,7 @@ class LinkController extends Controller
     }
 
 
-    
+
 
 
 }

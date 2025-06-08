@@ -40,7 +40,7 @@
 
         <!-- Resources Display Section -->
         <div class="row" id="resourcesContainer">
-            @php
+            {{-- @php
                 $groupedLinks = [
                     'site' => [
                         ['title' => 'Example Research Site', 'url' => 'https://research.example.com', 'description' => 'Comprehensive research database with peer-reviewed papers', 'icon' => 'globe', 'color' => '#ff6b6b'],
@@ -57,7 +57,7 @@
                         ['title' => 'The Future of Web Development', 'url' => 'https://web-future.example.org', 'description' => 'Analysis of emerging trends in web technologies', 'icon' => 'chart-line', 'color' => '#ffaaaa']
                     ]
                 ];
-            @endphp
+            @endphp --}}
 
             @foreach ($groupedLinks as $type => $linksOfType)
                 @if (!empty($linksOfType))
@@ -69,7 +69,7 @@
                             <h3 class="m-0 text-danger font-weight-bold">{{ ucfirst($type) }} Resources</h3>
                             <span class="badge badge-pill badge-danger ml-auto px-3 py-2" style="font-size: 1rem;">{{ count($linksOfType) }} items</span>
                         </div>
-                        
+
                         <div class="row">
                             @foreach ($linksOfType as $link)
                                 <div class="col-lg-4 col-md-6 mb-4">
@@ -116,12 +116,12 @@
         body {
             background-color: #fafafa;
         }
-        
+
         .hero-bg {
             position: relative;
             overflow: hidden;
         }
-        
+
         .hero-bg::after {
             content: '';
             position: absolute;
@@ -132,20 +132,20 @@
             background: radial-gradient(circle, rgba(220,53,69,0.1) 0%, rgba(220,53,69,0) 70%);
             z-index: 0;
         }
-        
+
         .page-heading {
             position: relative;
             z-index: 1;
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
+
         .divider {
             width: 100px;
             height: 4px;
             border-radius: 2px;
             margin: 1.5rem auto;
         }
-        
+
         /* Search Bar Styles */
         .search-bar {
             position: relative;
@@ -153,7 +153,7 @@
             overflow: hidden;
             background: white;
         }
-        
+
         .search-input {
             border: none;
             padding: 15px 25px;
@@ -161,11 +161,11 @@
             box-shadow: none !important;
             font-size: 1.1rem;
         }
-        
+
         .search-input:focus {
             outline: none;
         }
-        
+
         .btn-search {
             position: absolute;
             right: 5px;
@@ -177,17 +177,17 @@
             border-radius: 50px;
             transition: all 0.3s;
         }
-        
+
         .btn-search:hover {
             background: #c82333 !important;
             transform: scale(1.05);
         }
-        
+
         /* Filter Select Styles */
         .filter-select {
             position: relative;
         }
-        
+
         .select-dropdown {
             appearance: none;
             -webkit-appearance: none;
@@ -200,7 +200,7 @@
             font-size: 1.1rem;
             color: #495057;
         }
-        
+
         .select-icon {
             position: absolute;
             right: 20px;
@@ -208,7 +208,7 @@
             transform: translateY(-50%);
             pointer-events: none;
         }
-        
+
         /* Resource Card Styles */
         .resource-card {
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -216,70 +216,70 @@
             overflow: hidden;
             background: white;
         }
-        
+
         .resource-card:hover {
             transform: translateY(-10px) scale(1.02);
             box-shadow: 0 15px 30px rgba(220, 53, 69, 0.2) !important;
             text-decoration: none;
         }
-        
+
         .resource-card .card-title {
             transition: color 0.3s;
         }
-        
+
         .resource-card:hover .card-title {
             color: #dc3545 !important;
         }
-        
+
         .resource-icon {
             transition: all 0.3s;
         }
-        
+
         .resource-card:hover .resource-icon {
             transform: scale(1.2);
         }
-        
+
         /* Section Header Styles */
         .section-header {
             transition: all 0.3s;
         }
-        
+
         .section-header:hover {
             background-color: rgba(220, 53, 69, 0.15) !important;
         }
-        
+
         .header-icon {
             transition: all 0.3s;
             box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
         }
-        
+
         /* Badge Styles */
         .badge-pill {
             transition: all 0.3s;
         }
-        
+
         .section-header:hover .badge-pill {
             transform: scale(1.1);
             box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
         }
-        
+
         /* Empty State Styles */
         .empty-state {
             max-width: 600px;
             margin: 0 auto;
             transition: all 0.3s;
         }
-        
+
         .empty-state-icon {
             transition: all 0.3s;
             box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
         }
-        
+
         #resetFilters:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(220, 53, 69, 0.4) !important;
         }
-        
+
         /* Animations */
         @keyframes fadeInUp {
             from {
@@ -291,35 +291,35 @@
                 transform: translateY(0);
             }
         }
-        
+
         .animate__fadeInUp {
             animation-name: fadeInUp;
         }
-        
+
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             .page-heading {
                 font-size: 2.2rem;
             }
-            
+
             .hero-bg {
                 padding: 3rem 1rem !important;
             }
-            
+
             .resource-card {
                 margin-bottom: 20px;
             }
-            
+
             .section-header {
                 flex-direction: column;
                 text-align: center;
             }
-            
+
             .header-icon {
                 margin-bottom: 15px;
                 margin-right: 0 !important;
             }
-            
+
             .badge-pill {
                 margin-top: 15px;
                 margin-left: 0 !important;
@@ -327,87 +327,72 @@
         }
     </style>
 
-    @section('scripts')
+    {{-- @section('scripts') --}}
         <script>
             $(document).ready(function () {
-                // Initialize animations with staggered delay
-                $('.resource-item').each(function (index) {
-                    $(this).css('animation-delay', `${index * 0.1}s`);
-                });
-                
-                // Add hover effect to cards
-                $('.resource-card').hover(
-                    function() {
-                        $(this).addClass('animate__animated animate__pulse');
-                    },
-                    function() {
-                        $(this).removeClass('animate__animated animate__pulse');
-                    }
-                );
+    // Filter functionality
+    $('#categoryFilter').change(function () {
+        filterResources();
+    });
 
-                // Filter functionality
-                $('#categoryFilter').change(function () {
-                    filterResources();
-                });
+    // Search functionality
+    $('#searchButton').click(filterResources);
+    $('#searchInput').keyup(function (e) {
+        if (e.keyCode === 13) filterResources();
+    });
 
-                // Search functionality
-                $('#searchButton').click(filterResources);
-                $('#searchInput').keyup(function (e) {
-                    if (e.keyCode === 13) filterResources();
-                });
+    // Reset filters
+    $('#resetFilters').click(function () {
+        $('#categoryFilter').val('all');
+        $('#searchInput').val('');
+        filterResources();
+        $('html, body').animate({
+            scrollTop: $('#searchInput').offset().top - 100
+        }, 500);
+    });
 
-                // Reset filters
-                $('#resetFilters').click(function () {
-                    $('#categoryFilter').val('all');
-                    $('#searchInput').val('');
-                    filterResources();
-                    $('html, body').animate({
-                        scrollTop: $('#searchInput').offset().top - 100
-                    }, 500);
-                });
+    function filterResources() {
+        const category = $('#categoryFilter').val();
+        const searchTerm = $('#searchInput').val().toLowerCase();
+        let visibleItems = 0;
 
-                function filterResources() {
-                    const category = $('#categoryFilter').val();
-                    const searchTerm = $('#searchInput').val().toLowerCase();
-                    let visibleItems = 0;
+        $('.resource-item').each(function () {
+            const itemCategory = $(this).data('category');
+            const itemTitle = $(this).data('title');
+            const matchesCategory = category === 'all' || itemCategory === category;
+            const matchesSearch = searchTerm === '' || itemTitle.includes(searchTerm);
 
-                    $('.resource-item').each(function () {
-                        const itemCategory = $(this).data('category');
-                        const itemTitle = $(this).data('title');
-                        const matchesCategory = category === 'all' || itemCategory === category;
-                        const matchesSearch = searchTerm === '' || itemTitle.includes(searchTerm);
+            if (matchesCategory && matchesSearch) {
+                $(this).closest('.col-lg-4').removeClass('d-none');
+                visibleItems++;
+            } else {
+                $(this).closest('.col-lg-4').addClass('d-none');
+            }
+        });
 
-                        if (matchesCategory && matchesSearch) {
-                            $(this).closest('.col-lg-4').removeClass('d-none');
-                            $(this).addClass('animate__animated animate__fadeInUp');
-                            visibleItems++;
-                        } else {
-                            $(this).closest('.col-lg-4').addClass('d-none');
-                        }
-                    });
+        // Show/hide category sections based on visible items
+        $('.resource-section').each(function () {
+            const sectionCategory = $(this).data('category');
+            const sectionHasVisibleItems = $(this).find('.col-lg-4:not(.d-none)').length > 0;
 
-                    // Show/hide category sections based on visible items
-                    $('.resource-section').each(function () {
-                        const sectionCategory = $(this).data('category');
-                        const sectionHasVisibleItems = $(this).find('.col-lg-4:not(.d-none)').length > 0;
+            if ((category === 'all' || sectionCategory === category) && sectionHasVisibleItems) {
+                $(this).removeClass('d-none');
+            } else {
+                $(this).addClass('d-none');
+            }
+        });
 
-                        if ((category === 'all' || sectionCategory === category) && sectionHasVisibleItems) {
-                            $(this).removeClass('d-none').addClass('animate__animated animate__fadeIn');
-                        } else {
-                            $(this).addClass('d-none');
-                        }
-                    });
+        // Show no results message if needed
+        if (visibleItems === 0) {
+            $('#noResults').removeClass('d-none');
+            $('#resourcesContainer').addClass('d-none');
+        } else {
+            $('#noResults').addClass('d-none');
+            $('#resourcesContainer').removeClass('d-none');
+        }
+    }
+});
 
-                    // Show no results message if needed
-                    if (visibleItems === 0) {
-                        $('#noResults').removeClass('d-none').addClass('animate__animated animate__fadeIn');
-                        $('#resourcesContainer').addClass('d-none');
-                    } else {
-                        $('#noResults').addClass('d-none');
-                        $('#resourcesContainer').removeClass('d-none');
-                    }
-                }
-            });
         </script>
-    @endsection
+    {{-- @endsection --}}
 @endsection
