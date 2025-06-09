@@ -79,11 +79,11 @@ Route::middleware('auth')->group(function () {
 
     // students CRUD
     Route::get('/students', [StudentController::class, 'index'])->name('students');
-    Route::get('/student/create', [StudentController::class, 'create'])->name('student.create');
-    Route::get('/student/edit/{student}', [StudentController::class, 'edit'])->name('student.edit');
-    Route::post('/student/update/{id}', [StudentController::class, 'update'])->name('student.update');
+    // Route::get('/student/create', [StudentController::class, 'create'])->name('student.create');
+    // Route::get('/student/edit/{student}', [StudentController::class, 'edit'])->name('student.edit');
+    // Route::post('/student/update/{id}', [StudentController::class, 'update'])->name('student.update');
     Route::post('/student/delete/{id}', [StudentController::class, 'destroy'])->name('student.destroy');
-    Route::post('/student/create', [StudentController::class, 'store'])->name('student.store');
+    // Route::post('/student/create', [StudentController::class, 'store'])->name('student.store');
     Route::get('/student/show/{id}', [StudentController::class, 'show'])->name('student.show');
 
     // Book Issue CRUD

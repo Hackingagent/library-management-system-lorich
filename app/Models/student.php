@@ -35,4 +35,8 @@ class student extends Authenticatable
         'password',
     ];
 
+
+    public function payment(){
+        return $this->hasMany(Payment::class);
+    }
 }

@@ -8,6 +8,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>User Panel</title>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+
+    {{-- <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"> --}}
+    <!-- Custom stlylesheet -->
 
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
@@ -52,7 +56,7 @@
                         </li>
                         @auth('student')
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Pay Library Fee</a>
+                                <a class="nav-link" href="{{ route('student.payment') }}">Pay Library Fee</a>
                             </li>
                         @endauth
 
