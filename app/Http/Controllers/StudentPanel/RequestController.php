@@ -15,6 +15,8 @@ class RequestController extends Controller
 
         $setting = settings::latest()->first();
 
+
+
         return view('student-panel.request', compact(['book', 'setting']));
     }
 
@@ -35,5 +37,20 @@ class RequestController extends Controller
 
         return redirect()->route('student.request', $book)->with('message', 'Request Sent Successfully');
 
+    }
+
+    public function adminRequestShow(){
+
+        $requests =  studentRequest::with(['student', 'book'])->get();
+
+        return view('request.index', compact('requests'));
+    }
+
+    public function adminDelete($id){
+        $request = studentRequest::find($id);
+
+        $request->delete();
+
+        return redirect()->route('admin.request.show')->with('message', 'Delete Request Successfully');
     }
 }

@@ -13,4 +13,12 @@ class Request extends Model
         'student_id',
         'book_id',
     ];
+
+    public function student(){
+        return $this->belongsTo(student::class);
+    }
+
+    public function book(){
+        return $this->belongsTo(book::class);
+    }
 }

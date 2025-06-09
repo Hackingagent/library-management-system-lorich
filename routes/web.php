@@ -13,6 +13,8 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\StudentPanel\LinkController as StudentLinkController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StudentPanel\RequestController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -113,6 +115,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/links/edit/{link}', [LinkController::class, 'edit'])->name('links.edit');
     Route::put('/links/update/{id}', [LinkController::class, 'update'])->name('links.update');
     Route::delete('/links/delete/{id}', [LinkController::class, 'destroy'])->name('links.destroy');
+
+
+
+    // Admin Request Management
+    Route::get('/request', [RequestController::class, 'adminRequestShow'])->name('admin.request.show');
+    Route::delete('/delete-request/{id}', [RequestController::class, 'adminDelete'])->name('admin.request.delete');
 
 
 });

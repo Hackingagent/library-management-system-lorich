@@ -56,6 +56,7 @@
                         <li><a href="{{ route('reports') }}">Reports</a></li>
                         <li><a href="{{ route('settings') }}">Settings</a></li>
                         <li><a href="{{ route('links.admin_links') }}">Links</a></li>
+                        <li><a href="{{ route('admin.request.show') }}">Request</a></li>
                     </ul>
                 </div>
             </div>

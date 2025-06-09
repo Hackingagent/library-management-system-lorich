@@ -47,6 +47,10 @@ class book extends Model
         return $this->hasOne(File::class, 'book_id');
     }
 
+    public function request(){
+        return $this->hasOne(Request::class);
+    }
+
 
 
 }
