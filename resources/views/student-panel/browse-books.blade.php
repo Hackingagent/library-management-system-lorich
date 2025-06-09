@@ -308,7 +308,7 @@
                             </div>
                             <div class="book-actions">
                                 @if ($book->status == 'Y')
-                                    <button class="borrow-btn">Borrow Now</button>
+                                    <a href="{{ route('student.request', $book) }}" class="borrow-btn">Borrow Now</a>
                                 @else
                                     <button class="borrow-btn disabled">Unavailable</button>
 

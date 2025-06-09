@@ -8,7 +8,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>User Panel</title>
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"> <!-- Bootstrap -->
+    <link rel="stylesheet" href="{{ asset('css/style.css') }} ">
+    {{-- <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"> --}}
 
     {{-- <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"> --}}
     <!-- Custom stlylesheet -->
