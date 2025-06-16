@@ -257,9 +257,9 @@
 
             <div class="filter-section">
                 <div class="filter-buttons">
-                    <button class="filter-btn active">All Books</button>
+                    <button class="filter-btn active" data-category="all">All Books</button>
                    @foreach ($category as $item)
-                     <button class="filter-btn">{{ $item->name }}</button>
+                     <button class="filter-btn" data-category="{{ $item->id }}">{{ $item->name }}</button>
 
                    @endforeach
                 </div>
@@ -277,7 +277,7 @@
                 <!-- Book 1 -->
                 @foreach ($books as $book)
 
-                    <div class="book-card">
+                    <div class="book-card" data-category="{{ $book->category->id }}">
                         <div class="book-image">
                             @if($book->file)
                                 <img src="{{ asset('storage/' . $book->file->path) }}" alt="Book Image" width="100">
@@ -325,12 +325,25 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                // Filter buttons
                 const filterButtons = document.querySelectorAll('.filter-btn');
+                const books = document.querySelectorAll('.book-card');
+
                 filterButtons.forEach(button => {
                     button.addEventListener('click', function () {
                         filterButtons.forEach(btn => btn.classList.remove('active'));
                         this.classList.add('active');
+
+                        const category = this.getAttribute('data-category');
+
+                        books.forEach(book => {
+                            if (category === 'all') {
+                                book.style.display = 'block'; // Show all books
+                            } else if (book.dataset.category === category) {
+                                book.style.display = 'block'; // Show selected category books
+                            } else {
+                                book.style.display = 'none'; // Hide other books
+                            }
+                        });
                     });
                 });
 
@@ -352,6 +365,7 @@
                     });
                 });
             });
+
         </script>
     </body>
 
