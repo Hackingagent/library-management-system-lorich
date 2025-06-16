@@ -8,9 +8,15 @@
                     <div class="logo border border-danger">
                         <img src="{{ asset('images/library.png') }}" alt="">
                     </div>
+                    @if (session('message'))
+                            <div class="badge badge-danger">
+                                <p>{{session('message')}}</p>
+                            </div>
+                        @endif
                     <form class="yourform" action="{{ route('student.login.perform') }}" method="post">
                         @csrf
                         <h3 class="heading">Student Login</h3>
+
                         <div class="form-group">
                             <label>Matriculation Number</label>
                             <input type="text" name="matricule" class="form-control" value="{{ old('matricule') }}"
@@ -23,7 +29,10 @@
                         <input type="submit" name="login" class="btn btn-danger" value="login" />
 
                         <p>Don't Have an Account <a href="{{ route('student.signup') }}">Signup</a></p>
+                        <p>Login As an Admin <a href="{{ route('show.login') }}">Admin Login</a></p>
+
                     </form>
+
                     @error('matricule')
                         <div class='alert alert-danger'>{{ $message }}</div>
                     @enderror

@@ -12,11 +12,10 @@ use Auth;
 class RequestController extends Controller
 {
     public function showRequest(book $book){
-
+        if(!Auth::guard('student')->user()){
+            return redirect()->route('student.login')->with('message', 'Please Login to borrow book');
+        }
         $setting = settings::latest()->first();
-
-
-
         return view('student-panel.request', compact(['book', 'setting']));
     }
 
