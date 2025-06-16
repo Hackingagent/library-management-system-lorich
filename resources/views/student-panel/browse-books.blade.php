@@ -258,10 +258,10 @@
             <div class="filter-section">
                 <div class="filter-buttons">
                     <button class="filter-btn active">All Books</button>
-                    <button class="filter-btn">Fiction</button>
-                    <button class="filter-btn">Science</button>
-                    <button class="filter-btn">History</button>
-                    <button class="filter-btn">Available</button>
+                   @foreach ($category as $item)
+                     <button class="filter-btn">{{ $item->name }}</button>
+
+                   @endforeach
                 </div>
                 <form action="" method="GET">
                     <input type="hidden" name="search" value="{{ request('search') }}">

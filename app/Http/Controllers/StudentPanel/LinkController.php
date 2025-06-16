@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\book;
 use Illuminate\Http\Request;
 use App\Models\Link;
+use App\Models\category;
 
 class LinkController extends Controller
 {
@@ -64,7 +65,9 @@ class LinkController extends Controller
             ->select('books.*')
             ->paginate(12);
 
-        return view("student-panel.browse-books", compact('books'));
+            $category = category::all();
+
+        return view("student-panel.browse-books", compact(['books', 'category']));
     }
 
 
